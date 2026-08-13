@@ -1,6 +1,6 @@
 # From Retrieval to Reasoning
 
-Companion code for the [From Retrieval to Reasoning](https://substack.com/@YOUR_HANDLE) series on Substack.
+Companion code for the [From Retrieval to Reasoning](https://substack.com/poojak13) series on Substack.
 
 This series explores how to move beyond basic LLM usage into production-grade model customization on AWS, starting with retrieval-augmented generation (RAG) and progressing through reinforcement learning techniques that teach models to reason.
 
@@ -8,17 +8,7 @@ This series explores how to move beyond basic LLM usage into production-grade mo
 
 | Folder | Topic | Substack Post |
 |--------|-------|---------------|
-| [`rlvr-code-generation/`](./rlvr-code-generation/) | RLVR for code generation using MBPP dataset on SageMaker | # From Retrieval to Reasoning
-
-Companion code for the [From Retrieval to Reasoning](https://substack.com/@YOUR_HANDLE) series on Substack.
-
-This series explores how to move beyond basic LLM usage into production-grade model customization on AWS, starting with retrieval-augmented generation (RAG) and progressing through reinforcement learning techniques that teach models to reason.
-
-## Examples
-
-| Folder | Topic | Substack Post |
-|--------|-------|---------------|
-| [`rlvr-code-generation/`](./rlvr-code-generation/) | RLVR for code generation using MBPP dataset on SageMaker | https://poojak13.substack.com/p/from-retrieval-to-reasoning-part |
+| [`rlvr-code-generation/`](./rlvr-code-generation/) | RLVR for code generation using MBPP dataset on SageMaker | [rom Retrieval to Reasoning - Part 2](https://poojak13.substack.com/p/from-retrieval-to-reasoning-part)
 
 More examples coming soon:
 - RLAIF (RL from AI Feedback)
