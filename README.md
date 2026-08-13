@@ -1,6 +1,6 @@
 # From Retrieval to Reasoning
 
-Companion code for the [From Retrieval to Reasoning](https://substack.com/poojak13) series on Substack.
+Companion code for the [From Retrieval to Reasoning](https://poojak13.substack.com/) series on Substack.
 
 This series explores how to move beyond basic LLM usage into production-grade model customization on AWS, starting with retrieval-augmented generation (RAG) and progressing through reinforcement learning techniques that teach models to reason.
 
