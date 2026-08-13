@@ -8,7 +8,7 @@ This series explores how to move beyond basic LLM usage into production-grade mo
 
 | Folder | Topic | Substack Post |
 |--------|-------|---------------|
-| [`rlvr-code-generation/`](./rlvr-code-generation/) | RLVR for code generation using MBPP dataset on SageMaker | [rom Retrieval to Reasoning - Part 2](https://poojak13.substack.com/p/from-retrieval-to-reasoning-part)
+| [`rlvr-code-generation/`](./rlvr-code-generation/) | RLVR for code generation using MBPP dataset on SageMaker | [From Retrieval to Reasoning - Part 2](https://poojak13.substack.com/p/from-retrieval-to-reasoning-part)
 
 More examples coming soon:
 - RLAIF (RL from AI Feedback)
