@@ -1,0 +1,128 @@
+{
+  "_comment": "IAM permission templates for SageMaker Multi-Turn RL (MTRL). There are THREE roles involved. Replace <ACCOUNT_ID>, <REGION>, and <EXECUTION_ROLE_NAME> with your values. See README.md for step-by-step setup instructions.",
+
+  "1_caller_identity": {
+    "_comment": "Attach this inline policy to the IAM user or role that RUNS train_mtrl.py (the one submitting the job). If running from SageMaker Studio, attach to the Studio domain execution role instead.",
+    "policy": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Sid": "PassRoleForCreateJob",
+          "Effect": "Allow",
+          "Action": "iam:PassRole",
+          "Resource": "arn:aws:iam::<ACCOUNT_ID>:role/service-role/<EXECUTION_ROLE_NAME>",
+          "Condition": {
+            "StringEquals": {
+              "iam:PassedToService": "job.sagemaker.amazonaws.com"
+            }
+          }
+        },
+        {
+          "Sid": "MTRLJobActions",
+          "Effect": "Allow",
+          "Action": [
+            "sagemaker:CreateJob",
+            "sagemaker:DescribeJob",
+            "sagemaker:StopJob",
+            "sagemaker:DeleteJob"
+          ],
+          "Resource": "arn:aws:sagemaker:*:*:job/*",
+          "Condition": {
+            "StringEquals": {
+              "aws:ResourceAccount": "${aws:PrincipalAccount}"
+            }
+          }
+        },
+        {
+          "Sid": "MTRLListJobsPermission",
+          "Effect": "Allow",
+          "Action": [
+            "sagemaker:ListJobs",
+            "sagemaker:ListJobSchemaVersions",
+            "sagemaker:DescribeJobSchemaVersion"
+          ],
+          "Resource": "*",
+          "Condition": {
+            "StringEquals": {
+              "aws:ResourceAccount": "${aws:PrincipalAccount}"
+            }
+          }
+        },
+        {
+          "Sid": "AgentCoreListForStudioPicker",
+          "Effect": "Allow",
+          "Action": [
+            "bedrock-agentcore:ListAgentRuntimes",
+            "bedrock-agentcore:ListAgentRuntimeVersions"
+          ],
+          "Resource": "*",
+          "Condition": {
+            "StringEquals": {
+              "aws:ResourceAccount": "${aws:PrincipalAccount}"
+            }
+          }
+        }
+      ]
+    }
+  },
+
+  "2_execution_role": {
+    "_comment": "This is the role you pass to MultiTurnRLTrainer (role=ROLE_ARN). Requires a TRUST POLICY update AND managed policy attachment.",
+    "trust_policy": {
+      "_comment": "Add job.sagemaker.amazonaws.com to the trust relationships. Keep any existing sagemaker.amazonaws.com entry.",
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "sagemaker.amazonaws.com"
+          },
+          "Action": "sts:AssumeRole"
+        },
+        {
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "job.sagemaker.amazonaws.com"
+          },
+          "Action": ["sts:AssumeRole", "sts:TagSession"]
+        }
+      ]
+    },
+    "managed_policy_to_attach": "arn:aws:iam::aws:policy/AmazonSageMakerJobFullAccess",
+    "additional_inline_policy": {
+      "_comment": "The execution role also needs to invoke your AgentCore runtime during training.",
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Sid": "InvokeAgentCore",
+          "Effect": "Allow",
+          "Action": [
+            "bedrock-agentcore:InvokeAgentRuntime",
+            "bedrock-agentcore:StopRuntimeSession",
+            "bedrock-agentcore:GetAgentRuntime",
+            "bedrock-agentcore:ListAgentRuntimes"
+          ],
+          "Resource": "*"
+        }
+      ]
+    }
+  },
+
+  "3_agentcore_runtime_role": {
+    "_comment": "This is the role your DEPLOYED AGENT runs under. AgentCore CLI creates it automatically during deploy, but it needs the runtime access policy attached so the agent can call back to SageMaker for inference and reward reporting.",
+    "trust_policy": {
+      "_comment": "AgentCore CLI sets this automatically. Shown here for reference.",
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "bedrock-agentcore.amazonaws.com"
+          },
+          "Action": "sts:AssumeRole"
+        }
+      ]
+    },
+    "managed_policy_to_attach": "arn:aws:iam::aws:policy/AmazonSageMakerJobRuntimeAccess"
+  }
+}
